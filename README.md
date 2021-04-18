@@ -22,7 +22,7 @@ In the other hand, if you want to convert morse code to clear text :
 The tricky thing about convert morse code to clear text is that each letters has to have 
 one space between them, and each words has to have two spaces between them
 
-If you have any doubts about the morse alphabet, you can consult the alphabet table :
+If you have any doubts about the morse alphabet, you can consult the alphabet table :<br>
 ![](images/alphabet.png)<br><br>
 It shows the morse alphabet, including the prosigns, number and special characters.
 
