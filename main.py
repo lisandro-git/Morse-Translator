@@ -214,7 +214,7 @@ def show_alphabet():
 
 def main(self=None):
     u.misc.clear()
-    u.Color.cprint("""
+    u.Color.cprint(r"""
    _____                               _________            .___      
   /     \   ___________  ______ ____   \_   ___ \  ____   __| _/____  
  /  \ /  \ /  _ \_  __ \/  ___// __ \  /    \  \/ /  _ \ / __ |/ __ \ 
@@ -255,11 +255,3 @@ def main(self=None):
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
