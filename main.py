@@ -69,120 +69,92 @@ morse_prosigns = {
     'Wait':                   '.-...'
 }
 
-all_morse_signs = list(morse_alphabet) + \
-                  list(morse_number) + \
-                  list(morse_special) + \
-                  list(morse_prosigns)
-mlist_char = []
+all_morse_letter = list(morse_alphabet) + \
+                   list(morse_number) + \
+                   list(morse_special) + \
+                   list(morse_prosigns)
 
-[mlist_char.append(dit_dah[1]) for dit_dah in list(morse_alphabet.items())]
-[mlist_char.append(dit_dah[1]) for dit_dah in list(morse_number.items())]
-[mlist_char.append(dit_dah[1]) for dit_dah in list(morse_special.items())]
-[mlist_char.append(dit_dah[1]) for dit_dah in list(morse_prosigns.items())]
+all_morse_code = []
+[all_morse_code.append(dit_dah[1]) for dit_dah in list(morse_alphabet.items())]
+[all_morse_code.append(dit_dah[1]) for dit_dah in list(morse_number.items())]
+[all_morse_code.append(dit_dah[1]) for dit_dah in list(morse_special.items())]
+[all_morse_code.append(dit_dah[1]) for dit_dah in list(morse_prosigns.items())]
 
 
 class word_to_morse:
     def main(self, word: str, led: bool=None):
         if (word != ""):
-            word_as_list = word_to_morse.split(self, word)
-            word_to_morse.toMorse(self, word_as_list, led=led)
+            word_as_list = self.split(word)
+            translated_string = self.to_morse(word_as_list)
+            u.Color.cprint(u.misc.join_list(translated_string), "green")
 
     def split(self, word: str):
         return [char for char in word];
 
-    def toMorse(self, word_list, led=None):
+    def to_morse(self, word_list, led=None):
         result = []
         i = 0
         j = 0 # edode : Used to get the morse code of the character
         while (i < len(word_list)):
-            if word_list[i] in all_morse_signs or word_list[i] == " ":
-                morse_code = all_morse_signs[j]
-                if(word_list[i] == morse_code):
-                    result.append(mlist_char[j]+"  ") # 19111999
+            if word_list[i] in all_morse_letter or word_list[i] == " ":
+                if word_list[i] == all_morse_letter[j]:
+                    result.append(all_morse_code[j] + "  ") # 19111999
                     j=0
                     i+=1
                 else:
                     j+=1
             else:
                 i+=1
-        u.Color.cprint("".join(str(result) for result in result), "green")
+        return result;
 
 class morse_to_word:
-        def main(ltr=None, led=None):
-            if ltr != "":
-                li = morse_to_word.split(ltr)
-                morse_to_word.toAlpha(li, ltr, led=led)
+        def main(self, morse: str=None, led: bool=None):
+            if morse != "":
+                morse_as_list = self.split(morse)
+                translated_string = self.translate_morse_letter(morse_as_list, led=led)
+                u.Color.cprint(u.misc.join_list(translated_string), "green")
             else:
                 main()
 
-        def split(word):  # split the string into a list
-            li = []
-            nchar = ""
-            x = 0
-            for char in word.lower():
+        def split(self, morse: str) -> list[str]:  # split the string into a list
+            morse_as_list = []
+            morse_letter = ""
+            i = 0
+            morse += " " # edode : in order to add the last character to the list
+            for char in morse:
+                # edode : the loop reads the string letter by letter and adds it to the list as soon as it found a morse letter
                 if char == " ":
-                    if len(nchar) != 0:
-                        li.append(nchar)
-                        nchar = ""
-                if word[-1] == "." or word[-1] == "-" or word[-1] == " ":
-                    if x + 1 == len(word):
-                        nchar += char
-                        li.append(nchar)
-                        nchar = ""
-                nchar += char
-                if nchar == " ":
-                    li.append(nchar)
-                    nchar = ""
-                x += 1
-            return li  # word is returned as a list, 1 letter being 1 element of a list
+                    if len(morse_letter) != 0:
+                        morse_as_list.append(morse_letter)
+                        morse_letter = ""
+                        continue;
+                if morse[-1] == "." or morse[-1] == "-" or morse[-1] == " ":
+                    if i + 1 == len(morse):
+                        morse_letter += char
+                        morse_as_list.append(morse_letter) # edode : adding the morse letter to the list
+                        morse_letter = ""
+                morse_letter += char
+                if morse_letter == " ": # edode : adding the space to the list
+                    morse_as_list.append(morse_letter)
+                    morse_letter = ""
+                i += 1
+            return morse_as_list;  # word is returned as a list, 1 letter being 1 element of a list
 
-        def wtSpace():  # printing the result whitout spaces (except for double spcaces)
+        def translate_morse_letter(self, morse_letters: list, led: bool=None) -> list[str]:
             result = []
-            for x in mlist_char:
-                noSpace = ""
-                noSpace = x
-                if noSpace != " ":
-                    nNoSpace = noSpace.replace(" ", "")  # nNoSpace = newNoSpace
-                    result.append(nNoSpace)
-                else:
-                    result.append(noSpace)
-            return result;
-
-        def toAlpha(li, li_morse, led=None):  # Decrypted morse code goes here
-            fResult = []
             i = 0
-            a = 0
-            x = 0
-            rWSpace = morse_to_word.wtSpace()
-            while x < len(li):
-                if li[i] in rWSpace or li[i] == " ":
-                    if li[i] == rWSpace[a]:
-                        fResult.append(all_morse_signs[a])# + " ")
-                        a = 0
-                        i += 1
-                        x += 1
+            j = 0
+            while i < len(morse_letters):
+                if morse_letters[i] in all_morse_code or morse_letters[i] == " ":
+                    if morse_letters[i] == all_morse_code[j]:
+                        result.append(all_morse_letter[j])
+                        j=0
+                        i+=1
                     else:
-                        a += 1
-                    if i == len(li):
-                        morse_to_word.word(fResult, li_morse, led=led)
+                        j+=1
                 else:
-                    x+=1
                     i+=1
-
-        def word(res, morse, led=None):  # Morse code finally comes here
-            li = []
-            nchar = ""
-            i = 0
-            for x in res:
-                if res[i] == " ":
-                    i += 1
-                    nchar += res
-                if res[i] == " " and res[i + 1] == " ":  # if there is 2 spaces, adds a space instead of 2 spaces
-                    li.append(nchar + " ")
-                    nchar = ""
-                nchar += x[i]
-                i = 0
-            u.Color.cprint(nchar, "green")
+            return result;
 
 def show_alphabet():
     equal = "="
@@ -210,7 +182,7 @@ def show_alphabet():
         else:
             print(letters, "\t", morse_special[letters])
 
-def main(self=None):
+def main():
     u.misc.clear()
     u.Color.cprint(r"""
    _____                               _________            .___      
@@ -225,18 +197,20 @@ def main(self=None):
     u.Color.cprint("2) Morse to Word", "green")
     u.Color.cprint("3) Display the Alphabet", "green")
     u.Color.cprint("4) Exit", "green")
+
     wtm = word_to_morse()
     mtw = morse_to_word()
+
     try:
         choice = int(input(""))
         if choice == 1:
             word = input("\nEnter your word : ")
-            wtm.main(wtm, word.lower())
+            wtm.main(word.lower())
             input("Enter to continue...")
             main()
         elif choice == 2:
             word = input("\nEnter your morse code : ")
-            morse_to_word.main(ltr=word, led=None)
+            mtw.main(word.lower())
             input("Enter to continue...")
             main()
         elif choice == 3:
