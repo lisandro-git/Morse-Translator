@@ -187,21 +187,22 @@ class morse_to_word:
 def show_alphabet():
     equal = "="
     u.misc.clear()
-    u.Color.cprint(equal*6 + " Alphabet " + equal*6 + " " + equal*6 + " Numbers " + equal*6, "yellow")
+    u.Color.cprint(f"{equal * 6} Alphabet {equal * 6} {equal * 6} Numbers {equal * 6}", "yellow")
 
-    sec_1 = list(morse_alphabet) + list(morse_number)
-    sec_2 = list(morse_special)  + list(morse_prosigns)
-    for i, letters in enumerate(sec_1):
+
+    alpha_and_num = list(morse_alphabet) + list(morse_number)
+    spec_and_pros = list(morse_special)  + list(morse_prosigns)
+
+    for i, letters in enumerate(alpha_and_num):
         if i == len(morse_alphabet):
             break;
         if i <= 9:
-            print(letters, "\t", morse_alphabet[letters], "\t\t",  str(i), morse_number[i])
+            print(f"{letters} \t {morse_alphabet[letters]} \t\t\t {i} {morse_number[i]}")
         else:
             print(letters,  "\t",  morse_alphabet[letters])
 
-    u.Color.cprint(equal * 6 + " Special " + equal * 6 + " " + equal * 6 + " Prosigns " + equal * 6, "yellow")
-
-    for i, letters in enumerate(sec_2):
+    u.Color.cprint(f"{equal * 6} Special {equal * 6} {equal * 6} Prosigns {equal * 6}", "yellow")
+    for i, letters in enumerate(spec_and_pros):
         if i == len(morse_special):
             break;
         if i < 7:
@@ -226,9 +227,6 @@ def main(self=None):
     u.Color.cprint("4) Exit", "green")
     wtm = word_to_morse()
     mtw = morse_to_word()
-    word = input("\nEnter your word : ")
-    wtm.main(word.lower())
-    exit(0)
     try:
         choice = int(input(""))
         if choice == 1:
