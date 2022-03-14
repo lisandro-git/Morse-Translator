@@ -1,77 +1,18 @@
-import utilities as u
+import json
+import os
 
-morse_alphabet = {
-     'a': '.-',
-     'b': '-...',
-     'c': '-.-.',
-     'd': '-..',
-     'e': '.',
-     'f': '..-.',
-     'g': '--.',
-     'h': '....',
-     'i': '..',
-     'j': '.---',
-     'k': '-.-',
-     'l': '.-..',
-     'm': '--',
-     'n': '-.',
-     'o': '---',
-     'p': '.--.',
-     'q': '--.-',
-     'r': '.-.',
-     's': '...',
-     't': '-',
-     'u': '..-',
-     'v': '...-',
-     'w': '.--',
-     'x': '-..-',
-     'y': '-.--',
-     'z': '--..'
-    }
-morse_number   = {
-     0: '-----',
-     1: '.----',
-     2: '..---',
-     3: '...--',
-     4: '....-',
-     5: '.....',
-     6: '-....',
-     7: '--...',
-     8: '---..',
-     9: '----.'}
-morse_special  = {
-    '!': '-.-.--',
-    '"': '.-..-.',
-    '&': '.-...',
-    "'": '.----.',
-    '(': '-.--.',
-    ')': '-.--.-',
-    '+': '.-.-.',
-    ',': '--..--',
-    '-': '-....-',
-    '.': '.-.-.-',
-    '/': '-..-.',
-    ':': '---...',
-    ';': '-.-.-.',
-    '=': '-...-',
-    '?': '..--..',
-    '@': '.--.-.',
-    '_': '..--.-',
-    ' ': ' '
-}
-morse_prosigns = {
-    'End of work':            '...-.-',
-    'Error':                  '········',
-    'Invitation to transmit': '-.-',
-    'Starting signal':        '-.-.-',
-    'New page signal':        '.-.-.',
-    'Understood':             '...-.',
-    'Wait':                   '.-...'
-}
+with open(os.path.join(os.path.dirname(__file__), 'morse_code.json'), "r") as f:
+    morse_code = json.load(f)
+f.close()
+
+morse_alphabet = morse_code["alphabet"]
+morse_number   = morse_code["number"]
+morse_special  = morse_code["special"]
+morse_prosigns = morse_code["prosigns"]
 
 all_morse_letter = list(morse_alphabet) + \
-                   list(morse_number) + \
-                   list(morse_special) + \
+                   list(morse_number)   + \
+                   list(morse_special)  + \
                    list(morse_prosigns)
 
 all_morse_code = []
@@ -80,12 +21,15 @@ all_morse_code = []
 [all_morse_code.append(dit_dah[1]) for dit_dah in list(morse_special.items())]
 [all_morse_code.append(dit_dah[1]) for dit_dah in list(morse_prosigns.items())]
 
+def join_list(word: str, sep: str="") -> str:
+    return sep.join(str(x) for x in word);
+
 class word_to_morse:
     def main(self, word: str, led: bool=None):
         if word != "":
             word_as_list = self.split(word)
             translated_string = self.to_morse(word_as_list)
-            u.Color.cprint(u.misc.join_list(translated_string), "green")
+            print(join_list(translated_string))
 
     def split(self, word: str):
         return [char for char in word];
@@ -111,7 +55,7 @@ class morse_to_word:
         if morse != "":
             morse_as_list = self.split(morse)
             translated_string = self.translate_morse_letter(morse_as_list, led=led)
-            u.Color.cprint(u.misc.join_list(translated_string), "green")
+            print(join_list(translated_string))
         else:
             main()
 
@@ -157,8 +101,7 @@ class morse_to_word:
 
 def show_alphabet():
     equal = "="
-    u.misc.clear()
-    u.Color.cprint(f"{equal * 6} Alphabet {equal * 6} {equal * 6} Numbers {equal * 6}", "yellow")
+    print(f"{equal * 6} Alphabet {equal * 6} {equal * 6} Numbers {equal * 6}")
 
     alpha_and_num = list(morse_alphabet) + list(morse_number)
     spec_and_pros = list(morse_special)  + list(morse_prosigns)
@@ -167,11 +110,11 @@ def show_alphabet():
         if i == len(morse_alphabet):
             break;
         if i <= 9:
-            print(f"{letters} \t {morse_alphabet[letters]}  \t\t\t\t {i} {morse_number[i]}")
+            print(f"{letters} \t {morse_alphabet[letters]}  \t\t\t\t {i} {morse_number[str(i)]}")
         else:
             print(f"{letters} \t {morse_alphabet[letters]}")
 
-    u.Color.cprint(f"{equal * 6} Special {equal * 6} {equal * 6} Prosigns {equal * 6}", "yellow")
+    print(f"{equal * 6} Special {equal * 6} {equal * 6} Prosigns {equal * 6}")
     for i, letters in enumerate(spec_and_pros):
         if i == len(morse_special):
             break;
@@ -181,15 +124,14 @@ def show_alphabet():
             print(f"{letters} \t {morse_special[letters]}")
 
 def main():
-    u.misc.clear()
-    u.Color.cprint(r"""
+    print(r"""
    _____                               _________            .___      
   /     \   ___________  ______ ____   \_   ___ \  ____   __| _/____  
  /  \ /  \ /  _ \_  __ \/  ___// __ \  /    \  \/ /  _ \ / __ |/ __ \ 
 /    Y    (  <_> )  | \/\___ \\  ___/  \     \___(  <_> ) /_/ \  ___/ 
 \____|__  /\____/|__|  /____  >\___  >  \______  /\____/\____ |\___  >
         \/                  \/     \/          \/            \/    \/ 
-    """, "green")
+    """)
 
     choice_list = [
         "Word to Morse",
@@ -220,7 +162,7 @@ def main():
     except KeyboardInterrupt:
         exit()
     except ValueError:
-        u.Color.cprint("Enter a numeric value", "red")
+        print("Enter a numeric value")
         main()
 
 if __name__ == '__main__':
