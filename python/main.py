@@ -25,7 +25,7 @@ def join_list(word: str, sep: str="") -> str:
     return sep.join(str(x) for x in word);
 
 class word_to_morse:
-    def main(self, word: str, led: bool=None):
+    def main(self, word: str):
         if word != "":
             word_as_list = self.split(word)
             translated_string = self.to_morse(word_as_list)
@@ -34,7 +34,7 @@ class word_to_morse:
     def split(self, word: str):
         return [char for char in word];
 
-    def to_morse(self, word_list, led=None):
+    def to_morse(self, word_list):
         result = []
         i = 0
         j = 0 # edode : Used to get the morse code of the character
@@ -51,10 +51,10 @@ class word_to_morse:
         return result;
 
 class morse_to_word:
-    def main(self, morse: str=None, led: bool=None):
+    def main(self, morse: str=None):
         if morse != "":
             morse_as_list = self.split(morse)
-            translated_string = self.translate_morse_letter(morse_as_list, led=led)
+            translated_string = self.translate_morse_letter(morse_as_list)
             print(join_list(translated_string))
         else:
             main()
@@ -83,7 +83,7 @@ class morse_to_word:
             i += 1
         return morse_as_list;  # word is returned as a list, 1 letter being 1 element of a list
 
-    def translate_morse_letter(self, morse_letters: list, led: bool=None) -> list[str]:
+    def translate_morse_letter(self, morse_letters: list) -> list[str]:
         result = []
         i = 0
         j = 0
