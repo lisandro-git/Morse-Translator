@@ -3,11 +3,22 @@ package morse
 func Decode(morse_code []string, morse_signs map[string]string) string {
 	var result string
 	var i int
+	var space bool // edode : used to add a space if there is two spaces in between words
 	
 	for i = 0; i < len(morse_code); i++ {
 		for key, value := range morse_signs {
-			if (value == morse_code[i]){
+			if morse_code[i] == "" {
+				if space {
+					result += " "
+					break;
+				}
+				space = true
+				continue;
+			}
+			if (value == morse_code[i]) {
 				result += key
+				space = false
+				break;
 			}
 		}
 	}
