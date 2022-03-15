@@ -1,2 +1,3 @@
 mod morse_to_word;
-mod word_to_morse;
+pub(crate) mod word_to_morse;
+mod alphabet;
