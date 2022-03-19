@@ -1,18 +1,74 @@
 use super::*;
 
-pub fn encode(word: String) -> Vec<String>{
-    let morse_signs = alphabet::ConfigSerde::read_config().unwrap();
-    let categories: Vec<String> = vec![
-        "alphabet".to_string(),
-        "number".to_string(),
-        "special".to_string(),
-        "prosigns".to_string(),
-    ];
-
-    let (alphabet_key, alphabet_value) = morse_signs.get_key_value("alphabet").unwrap();
-    let (number_key, number_value) = morse_signs.get_key_value("number").unwrap();
-    let (special_key, special_value) = morse_signs.get_key_value("special").unwrap();
-    let (prosigns_key, prosigns_value) = morse_signs.get_key_value("prosigns").unwrap();
-
-    return vec![];
+pub fn encode(input: String) -> String {
+    let words = input.to_lowercase().trim().to_string();
+    let text = words.chars();
+    let mut result = String::new();
+    for t in text {
+        let morse_letter = match t {
+            'a' => ".-",
+            'b' => "-...",
+            'c' => "-.-.",
+            'd' => "-..",
+            'e' => ".",
+            'f' => "..-.",
+            'g' => "--.",
+            'h' => "....",
+            'i' => "..",
+            'j' => ".---",
+            'k' => "-.-",
+            'l' => ".-..",
+            'm' => "--",
+            'n' => "-.",
+            'o' => "---",
+            'p' => ".--.",
+            'q' => "--.-",
+            'r' => ".-.",
+            's' => "...",
+            't' => "-",
+            'u' => "..-",
+            'v' => "...-",
+            'w' => ".--",
+            'x' => "-..-",
+            'y' => "-.--",
+            'z' => "--..",
+            '0' => "-----",
+            '1' => ".----",
+            '2' => "..---",
+            '3' => "...--",
+            '4' => "....-",
+            '5' => ".....",
+            '6' => "-....",
+            '7' => "--...",
+            '8' => "---..",
+            '9' => "----.",
+            '.' => ".-.-.-",
+            ',' => "--..--",
+            '?' => "..--..",
+            '\'' => ".----.",
+            '!' => "-.-.--",
+            '/' => "-..-.",
+            '(' => "-.--.",
+            ')' => "-.--.-",
+            '&' => ".-...",
+            ':' => "---...",
+            ';' => "-.-.-.",
+            '=' => "-...-",
+            '+' => ".-.-.",
+            '-' => "-....-",
+            '_' => "..--.-",
+            '"' => ".-..-.",
+            '$' => "...-..-",
+            '@' => ".--.-.",
+            ' ' => "/",
+            _ => {
+                println!("Could not parse: {}", t);
+                return String::new();
+            }
+        };
+        result.push_str(morse_letter);
+        result.push(' ');
+    }
+    result.pop(); // edode : removing the trailing "/"
+    return result;
 }
