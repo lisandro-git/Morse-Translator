@@ -1,6 +1,13 @@
 package morse
 
-func Decode(morse_code []string, morse_signs map[string]string) string {
+import (
+	"strings"
+)
+
+func Decode(word string, morse_signs map[string]string) string {
+	line := strings.TrimSuffix(word, "\n")
+	morse_code := strings.Split(line, " ")
+	
 	var result string
 	var i int
 	var space bool // edode : used to add a space if there is two spaces in between words
