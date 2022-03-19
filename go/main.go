@@ -3,9 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"morse-translator/morse"
 	"os"
 	"strings"
-	"morse-translator/morse"
 )
 
 func from_text() {
@@ -17,7 +17,8 @@ func from_text() {
 		fmt.Println(err)
 		return
 	}
-	strings.TrimSuffix(line, "\n")
+	line = strings.TrimSuffix(line, "\n")
+	line = strings.ToLower(line)
 	var encoded []string = morse.Encode(line, morse.All_signs)
 	fmt.Println(encoded)
 }
