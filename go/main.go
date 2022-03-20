@@ -16,7 +16,7 @@ func from_text() {
 		fmt.Println(err)
 		return
 	}
-	var encoded []string = morse.Encode(line, morse.All_signs)
+	var encoded []string = morse.Encode(line)
 	fmt.Println(encoded)
 }
 
@@ -30,7 +30,7 @@ func from_morse() {
 		return
 	}
 
-	var decoded string = morse.Decode(line, morse.All_signs)
+	var decoded string = morse.Decode(line)
 	fmt.Println(decoded)
 }
 
